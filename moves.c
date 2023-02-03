@@ -1,3 +1,5 @@
+#include "push_swap.h"
+
 void    sa(t_node **heada) {
     t_node *tmp = *heada;
     int tmp_value = tmp->value;
@@ -6,6 +8,8 @@ void    sa(t_node **heada) {
 }
 
 void    sb(t_node **headb) {
+	if (*headb == NULL)
+		return ;
     t_node *tmp = *headb;
     int tmp_value = tmp->value;
     tmp->value = tmp->next->value;
@@ -18,6 +22,8 @@ void    ss(t_node **heada, t_node **headb) {
 }
 
 void    pa(t_node **heada, t_node **headb) {
+	if (*headb == NULL)
+		return ;
     t_node *tmp = *headb;
     *headb = tmp->next;
     tmp->next = *heada;
@@ -25,6 +31,8 @@ void    pa(t_node **heada, t_node **headb) {
 }
 
 void    pb(t_node **heada, t_node **headb) {
+	if (*heada == NULL)
+		return ;
     t_node *tmp = *heada;
     *heada = tmp->next;
     tmp->next = *headb;
@@ -32,6 +40,8 @@ void    pb(t_node **heada, t_node **headb) {
 }
 
 void    ra(t_node **heada) {
+	if (*heada == NULL)
+		return ;
     t_node *tmp = *heada;
     while (tmp->next != NULL) {
         tmp = tmp->next;
@@ -42,6 +52,8 @@ void    ra(t_node **heada) {
 }
 
 void    rb(t_node **headb) {
+	if (*headb == NULL)
+		return ;
     t_node *tmp = *headb;
     while (tmp->next != NULL) {
         tmp = tmp->next;
@@ -57,6 +69,8 @@ void    rr(t_node **heada, t_node **headb) {
 }
 
 void    rra(t_node **heada) {
+	if (*heada == NULL)
+		return ;
     t_node *tmp = *heada;
     while (tmp->next->next != NULL) {
         tmp = tmp->next;
@@ -67,6 +81,8 @@ void    rra(t_node **heada) {
 }
 
 void    rrb(t_node **headb) {
+	if (*headb == NULL)
+		return ;
     t_node *tmp = *headb;
     while (tmp->next->next != NULL) {
         tmp = tmp->next;
