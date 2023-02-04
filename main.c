@@ -87,12 +87,14 @@ void	push_min_max(t_node **heada, t_node **headb, int min, int max)
 	if (!heada || !headb)
 		return ;
 	t_node *tmp = *heada;
-	int i = 0;
-	while (i <= node_counter(heada)) {
+    int n = node_counter(heada);
+	int i = 1;
+	while (i <= n) {
 		printf("value = %i\n", tmp->value);
 		if (tmp->value != min && tmp->value != max) {
 			write(1, "pb\n", 3);
 			pb(heada, headb);
+            print_stacks(*heada, *headb);
 		}
 		else {
 			write(1, "ra\n", 3);
@@ -103,6 +105,7 @@ void	push_min_max(t_node **heada, t_node **headb, int min, int max)
 		i++;
 	}
 }
+
 
 void	find_min_max(t_node **heada, t_node **headb)
 {
@@ -119,8 +122,9 @@ void	find_min_max(t_node **heada, t_node **headb)
 			max = tmp->value;
 		tmp = tmp->next;
 	}
+    printf("min = %d, max = %d\n", min, max);
 	push_min_max(heada, headb, min, max);
-	printf("min = %d, max = %d\n", min, max);
+
 }
 
 int main(int argc, char **argv) {
