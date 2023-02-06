@@ -82,7 +82,7 @@ int node_counter(t_node **head)
 	return i;
 }
 
-void	push_min_max(t_node **heada, t_node **headb, int min, int max)
+/*void	push_min_max(t_node **heada, t_node **headb, int min, int max)
 {
 	if (!heada || !headb)
 		return ;
@@ -104,13 +104,15 @@ void	push_min_max(t_node **heada, t_node **headb, int min, int max)
 		tmp = *heada;
 		i++;
 	}
-}
+}*/
 
 
-void	find_min_max(t_node **heada, t_node **headb)
+
+/*int	*find_min_max(t_node **heada, t_node **headb)
 {
+	int *arr = (int *)malloc(sizeof(int) * 2);
 	if (!heada || !headb)
-		return ;
+		return 0;
 	int min = 2147483647;
 	int max = -2147483648;
 	struct s_node *tmp = *heada;
@@ -122,9 +124,64 @@ void	find_min_max(t_node **heada, t_node **headb)
 			max = tmp->value;
 		tmp = tmp->next;
 	}
-    printf("min = %d, max = %d\n", min, max);
-	push_min_max(heada, headb, min, max);
+	arr = (int[]){min, max};
+	return (arr);
+}*/
 
+t_node *cpy_lst(t_node *node)
+{
+	t_node *tmp = node;
+	t_node *new = NULL;
+	while (tmp)
+	{
+		add_node(&new, create_node(tmp->value));
+		tmp = tmp->next;
+	}
+	return new;
+}
+
+void	bubble_sort_lst(t_node *head)
+{
+	t_node *tmp = head;
+	t_node *tmp2 = head;
+	int i = 0;
+	int n = node_counter(&head);
+	while (i < n)
+	{
+		while (tmp2->next)
+		{
+			if (tmp2->value > tmp2->next->value)
+			{
+				int tmp3 = tmp2->value;
+				tmp2->value = tmp2->next->value;
+				tmp2->next->value = tmp3;
+			}
+			tmp2 = tmp2->next;
+		}
+		tmp2 = tmp;
+		i++;
+	}
+}
+
+int find_middle_node(t_node **heada)
+{
+	t_node *tmp;
+	int n = node_counter(heada);
+	int i = 1;
+	t_node *cpy = cpy_lst(*heada);
+	print_stacks(cpy, *heada);
+	bubble_sort_lst(cpy);
+	write(1, "sorted\n", 7);
+	tmp = cpy;
+	print_stacks(tmp, cpy);
+	while (i <= n / 2)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	printf("middle = %i\n", tmp->value);
+	free_list(&cpy);
+	return tmp->value;
 }
 
 int main(int argc, char **argv) {
@@ -140,8 +197,8 @@ int main(int argc, char **argv) {
         i++;
     }
 	print_stacks(heada, headb);
-	find_min_max(&heada, &headb);
-		
+/*	find_min_max(&heada, &headb);*/
+	find_middle_node(&heada);
 	print_stacks(heada, headb);
     free_list(&heada);
 	free_list(&headb);
