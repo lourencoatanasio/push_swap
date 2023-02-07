@@ -163,6 +163,18 @@ void	bubble_sort_lst(t_node *head)
 	}
 }
 
+void    assign_index(t_node **head)
+{
+    t_node *tmp = *head;
+    int i = 0;
+    while (tmp)
+    {
+        tmp->index = i;
+        tmp = tmp->next;
+        i++;
+    }
+}
+
 int find_middle_node(t_node **heada)
 {
 	t_node *tmp;
@@ -184,6 +196,75 @@ int find_middle_node(t_node **heada)
 	return tmp->value;
 }
 
+void    print_index(t_node **head)
+{
+    t_node *tmp = *head;
+    while (tmp)
+    {
+        printf("index = %i\n", tmp->index);
+        tmp = tmp->next;
+    }
+}
+
+void	sort_n_change(t_node **heada)
+{
+    t_node *tmp;
+    t_node *t;
+    t_node *a;
+    tmp = cpy_lst(*heada);
+    bubble_sort_lst(tmp);
+    assign_index(&tmp);
+    t = tmp;
+    a = *heada;
+    while(t)
+    {
+        while (a)
+        {
+            if (t->value == a->value)
+            {
+                a->value = t->index;
+                break;
+            }
+            a = a->next;
+        }
+        a = *heada;
+        t = t->next;
+    }
+    print_stacks(*heada, tmp);
+    free_list(&tmp);
+}
+
+int ft_pow(int n, int pow)
+{
+    int i = 0;
+    int res = 1;
+    while (i < pow)
+    {
+        res *= n;
+        i++;
+    }
+    return res;
+}
+
+int rtn_binary(int n)
+{
+    int i = 0;
+    int binary = 0;
+    while (n != 0)
+    {
+        binary += (n % 2) * ft_pow(10, i);
+        n /= 2;
+        i++;
+    }
+    return binary;
+}
+
+void	push_swap(t_node **heada, t_node **headb)
+{
+    sort_n_change(heada);
+    print_stacks(*heada, *headb);
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         write(1, "error\n", 6);
@@ -197,9 +278,7 @@ int main(int argc, char **argv) {
         i++;
     }
 	print_stacks(heada, headb);
-/*	find_min_max(&heada, &headb);*/
-	find_middle_node(&heada);
-	print_stacks(heada, headb);
+    push_swap(&heada, &headb);
     free_list(&heada);
 	free_list(&headb);
     return 0;
