@@ -259,9 +259,62 @@ int rtn_binary(int n)
     return binary;
 }
 
+int str_num_check(char *str, int i)
+{
+    if (!str[i])
+        return 2;
+    if else(str[i] == '1')
+        return 1;
+    return 0;
+}
+
+int int_to_str(int n)
+{
+    int i = 0;
+    int len = 0;
+    int *arr = (int *)malloc(sizeof(int) * 10);
+    while (n != 0)
+    {
+        arr[i] = n % 10;
+        n /= 10;
+        i++;
+        len++;
+    }
+    i = 0;
+    while (i < len)
+    {
+        if (arr[i] == 1)
+            return 1;
+        i++;
+    }
+    return 0;
+}
+
+int check_binary_unit(int n, int r)
+{
+    int i = 0;
+    int binary = rtn_binary(n);
+
+    if (i == 1)
+        return 1;
+    return 0;
+}
+
+void    algorithm(t_node **heada, t_node **headb)
+{
+
+    while (*headb)
+    {
+        write(1, "pa\n", 3);
+        pa(heada, headb);
+        print_stacks(*heada, *headb);
+    }
+}
+
 void	push_swap(t_node **heada, t_node **headb)
 {
     sort_n_change(heada);
+    algorithm(heada, headb);
     print_stacks(*heada, *headb);
 }
 
