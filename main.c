@@ -230,7 +230,6 @@ void	sort_n_change(t_node **heada)
         a = *heada;
         t = t->next;
     }
-    print_stacks(*heada, tmp);
     free_list(&tmp);
 }
 
@@ -246,76 +245,115 @@ int ft_pow(int n, int pow)
     return res;
 }
 
-int rtn_binary(int n)
+char *fill_str(char *str, int n)
 {
     int i = 0;
-    int binary = 0;
+    n = 9 - n;
+    while (i < n)
+    {
+        str[i] = '0';
+        i++;
+    }
+    return str;
+}
+
+char *ft_strrev(char *str)
+{
+    int i = 0;
+    int j = 0;
+    char tmp;
+    while (str[i] != '\0')
+        i++;
+    i--;
+    while (j < i)
+    {
+        tmp = str[j];
+        str[j] = str[i];
+        str[i] = tmp;
+        j++;
+        i--;
+    }
+    return str;
+}
+
+char *itoa_binary(int n)
+{
+    int i = 0;
+    int j = 8;
+    int tmp = n;
+    while (tmp != 0)
+    {
+        tmp /= 2;
+        i++;
+    }
+    char *str = (char *)malloc(sizeof(char) * 10);
     while (n != 0)
     {
-        binary += (n % 2) * ft_pow(10, i);
+        str[j] = (n % 2) + '0';
         n /= 2;
-        i++;
+        j--;
     }
-    return binary;
+    str[9] = '\0';
+    str = fill_str(str, i);
+    return str;
 }
 
-int str_num_check(char *str, int i)
+int check_binary(char *str, int n)
 {
-    if (!str[i])
-        return 2;
-    if else(str[i] == '1')
+    if (str[n] == '0')
+        return 0;
+    if (str[n] == '1')
         return 1;
-    return 0;
 }
 
-int int_to_str(int n)
+int compare_lst(t_node **heada, t_node **headb)
 {
-    int i = 0;
-    int len = 0;
-    int *arr = (int *)malloc(sizeof(int) * 10);
-    while (n != 0)
+    t_node *tmpa = *heada;
+    t_node *tmpb = *headb;
+    while (tmpa && tmpb)
     {
-        arr[i] = n % 10;
-        n /= 10;
-        i++;
-        len++;
+        if (tmpa->value != tmpb->value)
+            return 0;
+        tmpa = tmpa->next;
+        tmpb = tmpb->next;
     }
-    i = 0;
-    while (i < len)
-    {
-        if (arr[i] == 1)
-            return 1;
-        i++;
-    }
-    return 0;
-}
-
-int check_binary_unit(int n, int r)
-{
-    int i = 0;
-    int binary = rtn_binary(n);
-
-    if (i == 1)
-        return 1;
-    return 0;
+    return 1;
 }
 
 void    algorithm(t_node **heada, t_node **headb)
 {
-
-    while (*headb)
-    {
-        write(1, "pa\n", 3);
-        pa(heada, headb);
-        print_stacks(*heada, *headb);
+    t_node *solve;
+    t_node *tmp;
+    int c = node_counter(heada);
+    int n = 0;
+    int i = 8;
+    solve = cpy_lst(*heada);
+    bubble_sort_lst(solve);
+    while(compare_lst(heada, &solve) == 0) {
+        tmp = *heada;
+        while (n < c) {
+            char *str = itoa_binary(tmp->value);
+            if (check_binary(str, i) == 0)
+                pb(heada, headb);
+            else
+                ra(heada);
+            free(str);
+            tmp = *heada;
+            n++;
+        }
+        tmp = *headb;
+        while (*headb)
+            pa(heada, headb);
+        i--;
+        n = 0;
     }
+    free_list(&solve);
 }
 
 void	push_swap(t_node **heada, t_node **headb)
 {
     sort_n_change(heada);
     algorithm(heada, headb);
-    print_stacks(*heada, *headb);
 }
 
 int main(int argc, char **argv) {
@@ -330,7 +368,6 @@ int main(int argc, char **argv) {
         add_node(&heada, create_node(ft_atoi(argv[i])));
         i++;
     }
-	print_stacks(heada, headb);
     push_swap(&heada, &headb);
     free_list(&heada);
 	free_list(&headb);

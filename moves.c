@@ -5,6 +5,7 @@ void    sa(t_node **heada) {
     int tmp_value = tmp->value;
     tmp->value = tmp->next->value;
     tmp->next->value = tmp_value;
+    write(1, "sa\n", 3);
 }
 
 void    sb(t_node **headb) {
@@ -14,11 +15,13 @@ void    sb(t_node **headb) {
     int tmp_value = tmp->value;
     tmp->value = tmp->next->value;
     tmp->next->value = tmp_value;
+    write(1, "sb\n", 3);
 }
 
 void    ss(t_node **heada, t_node **headb) {
     sa(heada);
     sb(headb);
+    write(1, "ss\n", 3);
 }
 
 void    pa(t_node **heada, t_node **headb) {
@@ -28,6 +31,7 @@ void    pa(t_node **heada, t_node **headb) {
     *headb = tmp->next;
     tmp->next = *heada;
     *heada = tmp;
+    write(1, "pa\n", 3);
 }
 
 void    pb(t_node **heada, t_node **headb) {
@@ -37,6 +41,7 @@ void    pb(t_node **heada, t_node **headb) {
     *heada = tmp->next;
     tmp->next = *headb;
     *headb = tmp;
+    write(1, "pb\n", 3);
 }
 
 void    ra(t_node **heada) {
@@ -49,6 +54,7 @@ void    ra(t_node **heada) {
     tmp->next = *heada;
     *heada = (*heada)->next;
     tmp->next->next = NULL;
+    write(1, "ra\n", 3);
 }
 
 void    rb(t_node **headb) {
@@ -61,11 +67,13 @@ void    rb(t_node **headb) {
     tmp->next = *headb;
     *headb = (*headb)->next;
     tmp->next->next = NULL;
+    write(1, "rb\n", 3);
 }
 
 void    rr(t_node **heada, t_node **headb) {
     ra(heada);
     rb(headb);
+    write(1, "rr\n", 3);
 }
 
 void    rra(t_node **heada) {
@@ -78,6 +86,7 @@ void    rra(t_node **heada) {
     tmp->next->next = *heada;
     *heada = tmp->next;
     tmp->next = NULL;
+    write(1, "rra\n", 4);
 }
 
 void    rrb(t_node **headb) {
@@ -90,9 +99,11 @@ void    rrb(t_node **headb) {
     tmp->next->next = *headb;
     *headb = tmp->next;
     tmp->next = NULL;
+    write(1, "rrb\n", 4);
 }
 
 void    rrr(t_node **heada, t_node **headb) {
     rra(heada);
     rrb(headb);
+    write(1, "rrr\n", 4);
 }
