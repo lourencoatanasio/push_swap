@@ -21,6 +21,8 @@ int ft_atoi(char *str) {
     return result * sign;
 }
 
+
+
 t_node	*create_node(int value) {
     t_node *node = (t_node *)malloc(sizeof(t_node));
     node->value = value;
@@ -48,6 +50,14 @@ void    free_list(t_node **head) {
         tmp = tmp2;
     }
     *head = NULL;
+}
+
+void    exit_free(t_node **heada, t_node **headb)
+{
+    free_list(heada);
+    free_list(headb);
+    write(1, "Error\n", 6);
+    exit(0);
 }
 
 void	print_stacks(t_node *heada, t_node *headb)
@@ -175,27 +185,6 @@ void    assign_index(t_node **head)
     }
 }
 
-int find_middle_node(t_node **heada)
-{
-	t_node *tmp;
-	int n = node_counter(heada);
-	int i = 1;
-	t_node *cpy = cpy_lst(*heada);
-	print_stacks(cpy, *heada);
-	bubble_sort_lst(cpy);
-	write(1, "sorted\n", 7);
-	tmp = cpy;
-	print_stacks(tmp, cpy);
-	while (i <= n / 2)
-	{
-		tmp = tmp->next;
-		i++;
-	}
-	printf("middle = %i\n", tmp->value);
-	free_list(&cpy);
-	return tmp->value;
-}
-
 void    print_index(t_node **head)
 {
     t_node *tmp = *head;
@@ -320,28 +309,84 @@ int compare_lst(t_node **heada, t_node **headb)
     return 1;
 }
 
+int *check_moves(t_node **heada, int n)
+{
+    t_node *tmp = *heada;
+    t_node *tmp2 = *heada;
+    char *str;
+    int *arr;
+    int i = 0;
+    int i2 = 0;
+    int last = 0;
+    int first = 0;
+    while (tmp2)
+    {
+        str = itoa_binary(tmp2->value);
+        if (str[n] == '0') {
+            first = i2;
+            break;
+        }
+        free(str);
+        i2++;
+        tmp2 = tmp2->next;
+    }
+    while (tmp)
+    {
+        str = itoa_binary(tmp->value);
+        if (str[n] == '0')
+            last = i;
+        free(str);
+        i++;
+        tmp = tmp->next;
+    }
+    arr = (int *)malloc(sizeof(int) * 2);
+    arr[0] = first;
+    arr[1] = last;
+    return arr;
+}
+
+int closer(t_node **heada, t_node **headb, int n)
+{
+    int count = 0;
+    int *arr = check_moves(heada, n);
+    int c = node_counter(heada);
+    int first = arr[0];
+    int last = arr[1];
+    if (first == 0 && last == 0)
+        return 0;
+    if (first <= c - last) {
+        count = first;
+        while (count > 0) {
+            ra(heada);
+            count--;
+        }
+        pb(heada, headb);
+    }
+    if (first > c - last) {
+        count = c - last;
+        while (count > 0) {
+            rra(heada);
+            count--;
+        }
+        pb(heada, headb);
+    }
+    return 1;
+}
+
 void    algorithm(t_node **heada, t_node **headb)
 {
     t_node *solve;
-    t_node *tmp;
-    int c = node_counter(heada);
     int n = 0;
     int i = 8;
     solve = cpy_lst(*heada);
     bubble_sort_lst(solve);
     while(compare_lst(heada, &solve) == 0) {
-        tmp = *heada;
-        while (n < c) {
-            char *str = itoa_binary(tmp->value);
-            if (check_binary(str, i) == 0)
-                pb(heada, headb);
-            else
-                ra(heada);
-            free(str);
-            tmp = *heada;
+        while (closer(heada, headb, i) == 1) {
+            closer(heada, headb, i);
             n++;
+            if (n > 10)
+                exit(0);
         }
-        tmp = *headb;
         while (*headb)
             pa(heada, headb);
         i--;
@@ -350,18 +395,14 @@ void    algorithm(t_node **heada, t_node **headb)
     free_list(&solve);
 }
 
-void    exit_free(t_node **heada, t_node **headb)
-{
-    free_list(heada);
-    free_list(headb);
-    write(1, "Error\n", 6);
-    exit(0);
-}
+
 
 void	push_swap(t_node **heada, t_node **headb)
 {
     sort_n_change(heada);
+    print_stacks(*heada, *headb);
     algorithm(heada, headb);
+    print_stacks(*heada, *headb);
 }
 
 void    repeat_check(t_node **heada, t_node **headb)
@@ -452,7 +493,6 @@ int main(int argc, char **argv) {
     }
     repeat_check(&heada, &headb);
     push_swap(&heada, &headb);
-    print_stacks(heada, headb);
     free_list(&heada);
 	free_list(&headb);
     return 0;
