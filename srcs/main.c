@@ -576,7 +576,6 @@ void    from_b(t_node **heada, t_node **headb)
     t_node *tmp;
     t_moves *moves;
     t_moves *moves2;
-    tmp = *headb;
     while(*headb)
     {
         tmp = *headb;
@@ -587,9 +586,11 @@ void    from_b(t_node **heada, t_node **headb)
             if (total_moves(moves2) <= total_moves(moves)) {
                 moves = moves2;
             }
+            free(moves2);
             tmp = tmp->next;
         }
         execute_moves(heada, headb, moves);
+        free(moves);
         pa(heada, headb);
     }
     if(check_index(heada, 0) > node_counter(heada) / 2)
@@ -620,7 +621,7 @@ void	push_swap(t_node **heada, t_node **headb)
     sort_n_change(heada);
 //    print_stacks(*heada, *headb);
     algorithm(heada, headb);
-//    print_stacks(*heada, *headb);
+    print_stacks(*heada, *headb);
 }
 
 void    repeat_check(t_node **heada, t_node **headb)
