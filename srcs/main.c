@@ -26,6 +26,7 @@ int ft_atoi(char *str) {
 t_node	*create_node(int value) {
     t_node *node = (t_node *)malloc(sizeof(t_node));
     node->value = value;
+	node->checked = 0;
     node->next = NULL;
     return node;
 }
@@ -209,9 +210,10 @@ void	sort_n_change(t_node **heada)
     {
         while (a)
         {
-            if (t->value == a->value)
+            if (t->value == a->value && a->checked == 0)
             {
                 a->value = t->index;
+				a->checked = 1;
                 break;
             }
             a = a->next;
@@ -450,14 +452,14 @@ int check_last(t_node **heada)
     return 0;
 }
 
-int total_moves(t_moves *moves)
+int total_moves(t_moves moves)
 {
     int i = 0;
-    if(moves->ra != 0 && moves->rb != 0) {
-        if(moves->ra > moves->rb)
-            i = moves->ra + moves->rb - moves->rb;
+    if(moves.ra != 0 && moves.rb != 0) {
+        if(moves.ra > moves.rb)
+            i += moves.ra;
         else
-            i = moves->ra + moves->rb - moves->ra;
+            i += moves.rb;
     }
     else
         i = moves->ra + moves->rb;
@@ -465,10 +467,11 @@ int total_moves(t_moves *moves)
         if(moves->rra > moves->rrb)
             i = moves->rra + moves->rrb - moves->rrb;
         else
-            i = moves->rra + moves->rrb - moves->rra;
+            i += moves.rrb;
     }
-    else
-        i = moves->rra + moves->rrb;
+    else {
+		i += moves.rra + moves.rrb;
+	}
     return i;
 }
 
@@ -533,16 +536,16 @@ t_moves *assign_moves(t_node **heada, t_node **headb, t_moves *moves, int index,
 {
     if(n == 0) {
         if (index <= node_counter(heada) / 2) {
-            moves->ra = index;
+            moves.ra = index;
         } else {
-            moves->rra = node_counter(heada) - index;
+            moves.rra = node_counter(heada) - index;
         }
     }
     else {
         if (index < node_counter(headb) / 2 + 1) {
-            moves->rb = index;
+            moves.rb = index;
         } else {
-            moves->rrb = node_counter(headb) - index;
+            moves.rrb = node_counter(headb) - index;
         }
     }
     return moves;
@@ -558,7 +561,7 @@ t_moves *init_moves(t_moves *moves)
     return moves;
 }
 
-t_moves *check_moves(t_node **heada, t_node **headb, int n, t_moves *moves)
+t_moves check_moves(t_node **heada, t_node **headb, int n, t_moves moves)
 {
     moves = init_moves(moves);
     int indexb = check_index(headb, n);
@@ -601,16 +604,129 @@ void    from_b(t_node **heada, t_node **headb)
     free(moves2);
 }
 
+int check_min(t_node **heada)
+{
+	t_node *tmp = *heada;
+	int min = tmp->value;
+	while(tmp)
+	{
+		if(tmp->value < min)
+			min = tmp->value;
+		tmp = tmp->next;
+	}
+	return min;
+}
+
+void	put_min_bottom(t_node **heada)
+{
+	int i = check_min(heada);
+	if(i < node_counter(heada) / 2)
+		while(check_index(heada, i) != node_counter(heada) - 1) {
+			ra(heada);
+		}
+	else
+		while(check_index(heada, i) != node_counter(heada) - 1)
+			rra(heada);
+}
+
+void	put_max_top(t_node **heada)
+{
+	int i = check_index(heada, node_counter(heada) - 1);
+	if(i <= node_counter(heada) / 2)
+		while(check_index(heada, node_counter(heada) - 1) != 0) {
+			ra(heada);
+		}
+	else
+		while(check_index(heada, node_counter(heada) - 1) != 0)
+			rra(heada);
+}
+
+void	put_min_top(t_node **heada)
+{
+	int i = check_min(heada);
+	if(i < node_counter(heada) / 2)
+		while(check_index(heada, i) != 0) {
+			ra(heada);
+		}
+	else
+		while(check_index(heada, i) != 0)
+			rra(heada);
+}
+
+
+
+void	only_three(t_node **head)
+{
+	int	min;
+	t_node *tmp;
+//	tavas a arranjar isto ok?
+	tmp = *head;
+	min = check_min(head);
+	if (tmp->value == min)
+		ra(head);
+	else if (tmp->next->value == min)
+		rra(head);
+	if (tmp->value > (*head)->next->value)
+	{
+		sa(head);
+		rra(head);
+		return;
+	}
+	rra(head);
+	print_stacks(*head, NULL);
+}
+
+void	only_four(t_node **heada, t_node **headb)
+{
+	t_node *tmp;
+	tmp = *heada;
+	put_min_top(heada);
+	if((*heada)->value == check_min(heada))
+		pb(heada, headb);
+	only_three(heada);
+	pa(heada, headb);
+}
+
+void	only_five(t_node **heada, t_node **headb)
+{
+	t_node *tmp;
+	tmp = *heada;
+	put_min_top(heada);
+	if((*heada)->value == check_min(heada))
+		pb(heada, headb);
+	only_four(heada, headb);
+	pa(heada, headb);
+}
+
+void	small_sort(t_node **heada, t_node **headb)
+{
+	if(node_counter(heada) == 2)
+	{
+		if((*heada)->value > (*heada)->next->value)
+			sa(heada);
+	}
+	else if(node_counter(heada) == 3)
+		only_three(heada);
+	else if(node_counter(heada) == 4)
+		only_four(heada, headb);
+	else if(node_counter(heada) == 5)
+		only_five(heada, headb);
+}
+
 void    algorithm(t_node **heada, t_node **headb)
 {
     t_node *solve;
 //    int i = 8;
     solve = cpy_lst(*heada);
     bubble_sort_lst(solve);
-    while(compare_lst(heada, &solve) == 0) {
-        push_ev(heada, headb);
-        from_b(heada, headb);
-    }
+	if(compare_lst(heada, &solve) == 0) {
+		if (node_counter(heada) <= 5)
+			small_sort(heada, headb);
+		while (compare_lst(heada, &solve) == 0) {
+			push_ev(heada, headb);
+			from_b(heada, headb);
+		}
+	}
     free_list(&solve);
 }
 

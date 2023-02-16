@@ -11,6 +11,7 @@ typedef struct s_node
 {
 	int		value;
     int    index;
+	int    checked;
 	struct s_node	*next;
 }	t_node;
 
