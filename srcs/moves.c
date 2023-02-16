@@ -70,9 +70,33 @@ void    rb(t_node **headb) {
     write(1, "rb\n", 3);
 }
 
+void    ra2(t_node **heada) {
+    if (*heada == NULL)
+        return ;
+    t_node *tmp = *heada;
+    while (tmp->next != NULL) {
+        tmp = tmp->next;
+    }
+    tmp->next = *heada;
+    *heada = (*heada)->next;
+    tmp->next->next = NULL;
+}
+
+void    rb2(t_node **headb) {
+    if (*headb == NULL)
+        return ;
+    t_node *tmp = *headb;
+    while (tmp->next != NULL) {
+        tmp = tmp->next;
+    }
+    tmp->next = *headb;
+    *headb = (*headb)->next;
+    tmp->next->next = NULL;
+}
+
 void    rr(t_node **heada, t_node **headb) {
-    ra(heada);
-    rb(headb);
+    ra2(heada);
+    rb2(headb);
     write(1, "rr\n", 3);
 }
 

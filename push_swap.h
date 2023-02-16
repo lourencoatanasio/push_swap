@@ -14,6 +14,15 @@ typedef struct s_node
 	struct s_node	*next;
 }	t_node;
 
+typedef struct s_moves
+{
+    int     ra;
+    int     rb;
+    int     rra;
+    int     rrb;
+    int     total;
+}   t_moves;
+
 void	sa(t_node **heada);
 void	sb(t_node **headb);
 void	ss(t_node **heada, t_node **headb);
