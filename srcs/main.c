@@ -558,10 +558,8 @@ t_moves *init_moves(t_moves *moves)
     return moves;
 }
 
-t_moves *check_moves(t_node **heada, t_node **headb, int n)
+t_moves *check_moves(t_node **heada, t_node **headb, int n, t_moves *moves)
 {
-    t_moves *moves;
-    moves = (t_moves *)malloc(sizeof(t_moves));
     moves = init_moves(moves);
     int indexb = check_index(headb, n);
     int indexa = next_a(heada, n);
@@ -576,21 +574,21 @@ void    from_b(t_node **heada, t_node **headb)
     t_node *tmp;
     t_moves *moves;
     t_moves *moves2;
+    moves = (t_moves *)malloc(sizeof(t_moves));
+    moves2 = (t_moves *)malloc(sizeof(t_moves));
     while(*headb)
     {
         tmp = *headb;
-        moves = check_moves(heada, headb, tmp->value);
+        moves = check_moves(heada, headb, tmp->value, moves);
         while(tmp)
         {
-            moves2 = check_moves(heada, headb, tmp->value);
+            moves2 = check_moves(heada, headb, tmp->value, moves2);
             if (total_moves(moves2) <= total_moves(moves)) {
                 moves = moves2;
             }
-            free(moves2);
             tmp = tmp->next;
         }
         execute_moves(heada, headb, moves);
-        free(moves);
         pa(heada, headb);
     }
     if(check_index(heada, 0) > node_counter(heada) / 2)
@@ -599,6 +597,8 @@ void    from_b(t_node **heada, t_node **headb)
     else
         while(check_index(heada, 0) != 0)
             ra(heada);
+    free(moves);
+    free(moves2);
 }
 
 void    algorithm(t_node **heada, t_node **headb)
@@ -613,8 +613,6 @@ void    algorithm(t_node **heada, t_node **headb)
     }
     free_list(&solve);
 }
-
-
 
 void	push_swap(t_node **heada, t_node **headb)
 {
