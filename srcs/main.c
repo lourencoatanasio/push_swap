@@ -462,10 +462,10 @@ int total_moves(t_moves moves)
             i += moves.rb;
     }
     else
-        i = moves->ra + moves->rb;
-    if(moves->rra != 0 && moves->rrb != 0) {
-        if(moves->rra > moves->rrb)
-            i = moves->rra + moves->rrb - moves->rrb;
+        i = moves.ra + moves.rb;
+    if(moves.rra != 0 && moves.rrb != 0) {
+        if(moves.rra > moves.rrb)
+            i = moves.rra + moves.rrb - moves.rrb;
         else
             i += moves.rrb;
     }
@@ -490,49 +490,49 @@ int next_a(t_node **heada, int n)
 
 
 
-void    execute_single_moves(t_node **heada, t_node **headb, t_moves *moves)
+void    execute_single_moves(t_node **heada, t_node **headb, t_moves moves)
 {
-    while(moves->ra != 0 || moves->rb != 0 || moves->rra != 0 || moves->rrb != 0)
+    while(moves.ra != 0 || moves.rb != 0 || moves.rra != 0 || moves.rrb != 0)
     {
-        if(moves->ra != 0)
+        if(moves.ra != 0)
         {
             ra(heada);
-            moves->ra--;
+            moves.ra--;
         }
-        if(moves->rb != 0)
+        if(moves.rb != 0)
         {
             rb(headb);
-            moves->rb--;
+            moves.rb--;
         }
-        if(moves->rra != 0)
+        if(moves.rra != 0)
         {
             rra(heada);
-            moves->rra--;
+            moves.rra--;
         }
-        if(moves->rrb != 0)
+        if(moves.rrb != 0)
         {
             rrb(headb);
-            moves->rrb--;
+            moves.rrb--;
         }
     }
 }
 
-void    execute_moves(t_node **heada, t_node **headb, t_moves *moves)
+void    execute_moves(t_node **heada, t_node **headb, t_moves moves)
 {
-    while(moves->ra != 0 && moves->rb != 0) {
-        moves->ra--;
-        moves->rb--;
+    while(moves.ra != 0 && moves.rb != 0) {
+        moves.ra--;
+        moves.rb--;
         rr(heada, headb);
     }
-    while(moves->rra != 0 && moves->rrb != 0) {
-        moves->rra--;
-        moves->rrb--;
+    while(moves.rra != 0 && moves.rrb != 0) {
+        moves.rra--;
+        moves.rrb--;
         rrr(heada, headb);
     }
     execute_single_moves(heada, headb, moves);
 }
 
-t_moves *assign_moves(t_node **heada, t_node **headb, t_moves *moves, int index, int n)
+t_moves assign_moves(t_node **heada, t_node **headb, t_moves moves, int index, int n)
 {
     if(n == 0) {
         if (index <= node_counter(heada) / 2) {
@@ -551,13 +551,13 @@ t_moves *assign_moves(t_node **heada, t_node **headb, t_moves *moves, int index,
     return moves;
 }
 
-t_moves *init_moves(t_moves *moves)
+t_moves init_moves(t_moves moves)
 {
-    moves->ra = 0;
-    moves->rb = 0;
-    moves->rra = 0;
-    moves->rrb = 0;
-    moves->total = 0;
+    moves.ra = 0;
+    moves.rb = 0;
+    moves.rra = 0;
+    moves.rrb = 0;
+    moves.total = 0;
     return moves;
 }
 
@@ -575,10 +575,8 @@ t_moves check_moves(t_node **heada, t_node **headb, int n, t_moves moves)
 void    from_b(t_node **heada, t_node **headb)
 {
     t_node *tmp;
-    t_moves *moves;
-    t_moves *moves2;
-    moves = (t_moves *)malloc(sizeof(t_moves));
-    moves2 = (t_moves *)malloc(sizeof(t_moves));
+    t_moves moves = {0, 0, 0, 0, 0};
+    t_moves moves2 = {0, 0, 0, 0, 0};
     while(*headb)
     {
         tmp = *headb;
@@ -600,8 +598,6 @@ void    from_b(t_node **heada, t_node **headb)
     else
         while(check_index(heada, 0) != 0)
             ra(heada);
-    free(moves);
-    free(moves2);
 }
 
 int check_min(t_node **heada)
@@ -678,8 +674,6 @@ void	only_three(t_node **head)
 
 void	only_four(t_node **heada, t_node **headb)
 {
-	t_node *tmp;
-	tmp = *heada;
 	put_min_top(heada);
 	if((*heada)->value == check_min(heada))
 		pb(heada, headb);
@@ -689,8 +683,6 @@ void	only_four(t_node **heada, t_node **headb)
 
 void	only_five(t_node **heada, t_node **headb)
 {
-	t_node *tmp;
-	tmp = *heada;
 	put_min_top(heada);
 	if((*heada)->value == check_min(heada))
 		pb(heada, headb);

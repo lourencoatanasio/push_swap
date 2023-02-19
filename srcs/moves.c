@@ -126,6 +126,18 @@ void    rrb(t_node **headb) {
     write(1, "rrb\n", 4);
 }
 
+void    rra2(t_node **heada) {
+    if (*heada == NULL)
+        return ;
+    t_node *tmp = *heada;
+    while (tmp->next->next != NULL) {
+        tmp = tmp->next;
+    }
+    tmp->next->next = *heada;
+    *heada = tmp->next;
+    tmp->next = NULL;
+ }
+
 void    rrb2(t_node **headb) {
 	if (*headb == NULL)
 		return ;
