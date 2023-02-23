@@ -39,6 +39,5 @@ void	print_stacks(t_node *heada, t_node *headb);
 void	free_list(t_node **head);
 void	add_node(t_node **head, t_node *node);
 t_node	*create_node(int value);
-int		ft_atoi(char *str);
 
 #endif
