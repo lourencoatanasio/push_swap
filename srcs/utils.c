@@ -1,42 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldiogo <ldiogo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/24 12:34:59 by ldiogo            #+#    #+#             */
-/*   Updated: 2023/02/24 12:35:00 by ldiogo           ###   ########.fr       */
+/*   Created: 2023/02/24 12:35:11 by ldiogo            #+#    #+#             */
+/*   Updated: 2023/02/24 12:35:12 by ldiogo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-int	main(int argc, char **argv)
+int	check_index(t_node **headb, int n)
 {
-	t_node	*heada;
-	t_node	*headb;
+	t_node	*tmp;
 	int		i;
 
-	i = 1;
-	heada = NULL;
-	headb = NULL;
-	if (argc < 2)
+	tmp = *headb;
+	i = 0;
+	while (tmp)
 	{
-		write(1, "Error\n", 6);
-		return (0);
-	}
-	while (i < argc)
-	{
-		ft_isdigit(argv[i], &heada, &headb);
-		check_int_cap(argv[i], &heada, &headb);
-		add_node(&heada, create_node(ft_atoi(argv[i])));
+		if (tmp->value == n)
+			return (i);
 		i++;
+		tmp = tmp->next;
 	}
-	repeat_check(&heada, &headb);
-	sort_n_change(&heada);
-	algorithm(&heada, &headb);
-	free_list(&heada);
-	free_list(&headb);
 	return (0);
+}
+
+t_moves	init_moves(void)
+{
+	t_moves	moves;
+
+	moves.ra = 0;
+	moves.rb = 0;
+	moves.rra = 0;
+	moves.rrb = 0;
+	return (moves);
+}
+
+int	check_min(t_node **heada)
+{
+	t_node	*tmp;
+	int		min;
+
+	tmp = *heada;
+	min = tmp->value;
+	while (tmp)
+	{
+		if (tmp->value < min)
+			min = tmp->value;
+		tmp = tmp->next;
+	}
+	return (min);
 }

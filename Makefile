@@ -1,4 +1,4 @@
-SRCS	= main.c moves.c
+SRCS	= main.c moves.c moves_1.c moves_2.c checkers.c algorithm.c hardcode.c lists_1.c move_functions.c utils.c lists.c
 
 OBJS	= $(addprefix objs/,$(SRCS:.c=.o))
 
