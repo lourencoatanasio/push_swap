@@ -55,3 +55,32 @@ int	check_min(t_node **heada)
 	}
 	return (min);
 }
+
+int	check_max(t_node **heada)
+{
+	t_node	*tmp;
+	int		max;
+
+	tmp = *heada;
+	max = tmp->value;
+	while (tmp)
+	{
+		if (tmp->value > max)
+			max = tmp->value;
+		tmp = tmp->next;
+	}
+	return (max);
+}
+
+void	put_max_top(t_node **headb)
+{
+	int	i;
+
+	i = check_max(headb);
+	if (check_index(headb, i) < node_counter(headb) / 2)
+		while (check_index(headb, i) != 0)
+			ra(headb);
+	else
+		while (check_index(headb, i) != 0)
+			rra(headb);
+}

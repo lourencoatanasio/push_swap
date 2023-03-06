@@ -12,22 +12,6 @@
 
 #include "../push_swap.h"
 
-int	check_max(t_node **heada)
-{
-	t_node	*tmp;
-	int		max;
-
-	tmp = *heada;
-	max = tmp->value;
-	while (tmp)
-	{
-		if (tmp->value > max)
-			max = tmp->value;
-		tmp = tmp->next;
-	}
-	return (max);
-}
-
 void	put_min_top(t_node **heada)
 {
 	int	i;
@@ -39,19 +23,6 @@ void	put_min_top(t_node **heada)
 	else
 		while (check_index(heada, i) != 0)
 			rra(heada);
-}
-
-void	put_max_top(t_node **headb)
-{
-	int	i;
-
-	i = check_max(headb);
-	if (check_index(headb, i) < node_counter(headb) / 2)
-		while (check_index(headb, i) != 0)
-			ra(headb);
-	else
-		while (check_index(headb, i) != 0)
-			rra(headb);
 }
 
 void	only_three(t_node **heada)
@@ -77,26 +48,6 @@ void	only_four(t_node **heada, t_node **headb)
 		pb(heada, headb);
 	only_three(heada);
 	pa(heada, headb);
-}
-
-void	print_stacks(t_node *stck_a, t_node *stck_b)
-{
-	while (stck_a || stck_b)
-	{
-		if (stck_a)
-			printf("%d    ", stck_a->value);
-		else
-			printf("     ");
-		if (stck_b)
-			printf("%d\n", stck_b->value);
-		else
-			printf("\n");
-		if (stck_a)
-			stck_a = stck_a->next;
-		if (stck_b)
-			stck_b = stck_b->next;
-	}
-	printf("################\n");
 }
 
 void	only_five(t_node **heada, t_node **headb)
