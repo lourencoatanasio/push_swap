@@ -28,6 +28,8 @@ typedef struct s_n
 	int	index;
 }	t_n;
 
+int		check_max(t_node **head);
+void	put_max_top(t_node **headb);
 void	free_list(t_node **head);
 void	exit_free(t_node **heada, t_node **headb);
 int		ft_atoi(char *str);

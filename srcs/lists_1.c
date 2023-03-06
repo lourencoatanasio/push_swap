@@ -33,7 +33,7 @@ void	exit_free(t_node **heada, t_node **headb)
 {
 	free_list(heada);
 	free_list(headb);
-	write(1, "Error\n", 6);
+	write(2, "Error\n", 6);
 	exit(0);
 }
 
