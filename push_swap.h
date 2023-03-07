@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldiogo <ldiogo@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/07 14:01:19 by ldiogo            #+#    #+#             */
+/*   Updated: 2023/03/07 14:01:20 by ldiogo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
@@ -28,6 +40,8 @@ typedef struct s_n
 	int	index;
 }	t_n;
 
+int		check_max(t_node **head);
+void	put_max_top(t_node **headb);
 void	free_list(t_node **head);
 void	exit_free(t_node **heada, t_node **headb);
 int		ft_atoi(char *str);

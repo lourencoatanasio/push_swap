@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
 	headb = NULL;
 	if (argc < 2)
 	{
-		write(1, "Error\n", 6);
+		write(2, "Error\n", 6);
 		return (0);
 	}
 	while (i < argc)
